@@ -1,0 +1,4 @@
+/snap/clion/44/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/shetritr/xv6-public
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/shetritr/xv6-public/cmake-build-debug
