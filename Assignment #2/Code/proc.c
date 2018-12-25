@@ -39,10 +39,10 @@ struct cpu*
 mycpu(void)
 {
   int apicid, i;
-  
+
   if(readeflags()&FL_IF)
     panic("mycpu called with interrupts enabled\n");
-  
+
   apicid = lapicid();
   // APIC IDs are not guaranteed to be contiguous. Maybe we should have
   // a reverse map, or reserve a register to store &cpus[i].
@@ -132,7 +132,7 @@ userinit(void)
   extern char _binary_initcode_start[], _binary_initcode_size[];
 
   p = allocproc();
-  
+
   initproc = p;
   if((p->pgdir = setupkvm()) == 0)
     panic("userinit: out of memory?");
@@ -216,7 +216,7 @@ fork(void)
     if(curproc->ofile[i])
       np->ofile[i] = filedup(curproc->ofile[i]);
   np->cwd = idup(curproc->cwd);
-  np -> sighandler = curproc -> sighandler;  // todo check
+  np -> sighandler = curproc -> sighandler;
 
   safestrcpy(np->name, curproc->name, sizeof(curproc->name));
 
@@ -344,7 +344,7 @@ scheduler(void)
   struct proc *p;
   struct cpu *c = mycpu();
   c->proc = 0;
-  
+
   for(;;){
     // Enable interrupts on this processor.
     sti();
@@ -438,7 +438,7 @@ sleep(void *chan, struct spinlock *lk)
 {
 
   struct proc *p = myproc();
-  
+
   if(p == 0)
     panic("sleep");
 
@@ -599,10 +599,8 @@ push(struct cstack *cstack, int sender_pid, int recepient_pid, int value) {//pus
         return 0;
       }
     }
-
   }
-
-  return 0;
+return 0;
 }
 
 
@@ -630,15 +628,14 @@ int sigsend(int dest_pid, int value) {
     if (p->pid == dest_pid) {
       if (push(&p->cstack, curr->pid, dest_pid, value) == 0) {
           release(&ptable.lock);
-          return -1; // in the stack
+          return -1; // not in the stack
       }
       release(&ptable.lock);
           return 0;
     }
-    }
-    release(&ptable.lock);
+  }
+  release(&ptable.lock);
   return -1;
-
 }
 
 void sigret(void) {
@@ -670,7 +667,4 @@ void signalexe(void){
     curr->tf->esp = curr->tf->esp - 12;
     curr->tf->eip = (uint)curr->sighandler;//setting the first instruction the be excuted after trapret
     cstackframe1->used = 1;
-
-
 }
-

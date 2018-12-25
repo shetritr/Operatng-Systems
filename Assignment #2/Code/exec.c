@@ -102,7 +102,7 @@ exec(char *path, char **argv)
   curproc->tf->eip = elf.entry;  // main
   curproc->tf->esp = sp;
 
-  curproc ->sighandler = (sig_handler)-1; //todo check that
+  curproc ->sighandler = (sig_handler)-1;
 
   switchuvm(curproc);
   freevm(oldpgdir);
